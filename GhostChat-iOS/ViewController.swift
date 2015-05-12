@@ -10,7 +10,7 @@ import UIKit
 import CoreBluetooth
 
 
-class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralManagerDelegate,CBPeripheralDelegate {
+class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralManagerDelegate,CBPeripheralDelegate, UITextFieldDelegate {
 
     // MARK: - Globals
     
@@ -44,9 +44,30 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var myTextField: UITextField!
+    var kbHeight: CGFloat!
 
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var chatView: UIView!
+    
     @IBAction func sendButtonPressed(sender: UIButton) {
-        advertiseNewName(myTextField.text)
+        
+        if nameField.text == ""{
+            let alertController = UIAlertController(title: "Set Your Name", message:
+                "Hello, Ghost!", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "OK :-P", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+                    nameField.becomeFirstResponder()
+            }))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            
+            
+            
+        }else{
+            //println("\(nameField.text)")
+            advertiseNewName(myTextField.text)
+            myTextField.text = ""
+            
+        }
 
     }
     
@@ -57,13 +78,66 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
         
     }
     
+    
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        advertiseNewName(myTextField.text)
+        //advertiseNewName(myTextField.text)
         putPeripheralManagerIntoMainQueue()
         
-
+        nameField.delegate = self
+        myTextField.delegate = self
+        
+        //tableView.setContentOffset(CGPointMake(0, CGFloat.max), animated: true)
+        
+        var tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "DismissKeyboard")
+        self.view.addGestureRecognizer(tap)
+        
+    }
+    
+    override func viewWillAppear(animated:Bool) {
+        super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func DismissKeyboard(){
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        self.view.endEditing(true)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+                kbHeight = keyboardSize.height
+                self.animateTextField(true)
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.animateTextField(false)
+    }
+    
+    func animateTextField(up: Bool) {
+        var movement = (up ? -kbHeight : kbHeight)
+        
+        UIView.animateWithDuration(0.3, animations: {
+            self.view.frame = CGRectOffset(self.view.frame, 0, movement)
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -206,9 +280,18 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
             CBAdvertisementDataManufacturerDataKey: "Hello anufacturerDataKey",
             CBAdvertisementDataServiceUUIDsKey: [theUUid],]
         
+        tableView.reloadData()
+        if (tableView.contentSize.height > tableView.frame.size.height)
+        {
+            let offset : CGPoint = CGPointMake(0, (tableView.contentSize.height - tableView.frame.size.height))
+            self.tableView.setContentOffset(offset, animated:true)
+        }
+        
+        
         // Start Advertising The Packet
         myPeripheralManager?.startAdvertising(dataToBeAdvertised)
     }
+    
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
         //
         println(" State in DidStartAdvertising: " + "\(myPeripheralManager?.state.rawValue)"  )
@@ -217,6 +300,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
             //            let myString = peripheral.isAdvertising
             println("Succesfully Advertising Data")
             updateStatusText("Succesfully Advertising Data")
+            
+           
+            
             
         } else{
             println("Failed to Advertise Data.  Error = \(error)")
@@ -308,7 +394,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
         var myMessageString: String!
         
         
-        //myMessageString = advertisementData[CBAdvertisementDataManufacturerDataKey] as String
+       // myMessageString = advertisementData[CBAdvertisementDataManufacturerDataKey] as! String
         
         
         let prefixString = "Ghost"
@@ -335,7 +421,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
                 //from http://www.andrewcbancroft.com/2014/08/16/sort-yourself-out-sorting-an-array-in-swift/
                 cleanAndSortedChatArray = sorted(fullChatArray,{
                     (str1: (String,String,String,String) , str2: (String,String,String,String) ) -> Bool in
-                    return str1.1.toInt() > str2.1.toInt()
+                    return str1.1.toInt() < str2.1.toInt()
                 })
                 
                 return
@@ -366,6 +452,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
         })
         
         tableView.reloadData()
+        if (tableView.contentSize.height > tableView.frame.size.height)
+        {
+            let offset : CGPoint = CGPointMake(0, (tableView.contentSize.height - tableView.frame.size.height))
+            self.tableView.setContentOffset(offset, animated:true)
+        }
         
     }
     
@@ -383,7 +474,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 0 {
+        if section == 1 {
             return cleanAndSortedChatArray.count
         }else{
             return cleanAndSortedArray.count
@@ -394,11 +485,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        if (indexPath.section == 0) {
+        if (indexPath.section == 1) {
             // Configure the cell...
             let cell = tableView.dequeueReusableCellWithIdentifier("chatCell", forIndexPath: indexPath) as! UITableViewCell
             cell.textLabel?.text = "\(cleanAndSortedChatArray[indexPath.row].2)"
             cell.detailTextLabel?.text = cleanAndSortedChatArray[indexPath.row].1
+            
             
             return cell
             
@@ -409,14 +501,16 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
             cell.textLabel?.text = "\(cleanAndSortedArray[indexPath.row].1)" + "  \(cleanAndSortedArray[indexPath.row].2)"
             cell.detailTextLabel?.text = cleanAndSortedArray[indexPath.row].3
             
-            return cell}
+            
+            return cell
+        }
         
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0{
+        if section == 1{
             return "Chat Activity"
-        }else if section == 1{
+        }else if section == 0{
             tableView.sectionIndexColor = UIColor.darkGrayColor()
             return "BackGround Devices"
         } else {

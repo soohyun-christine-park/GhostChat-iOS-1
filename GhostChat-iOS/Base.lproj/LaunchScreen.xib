@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6214" systemVersion="14A314h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6207"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,31 +10,49 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright (c) 2015 yuryg. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
-                    <rect key="frame" x="20" y="439" width="441" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GhostChat-iOS" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
-                    <rect key="frame" x="20" y="140" width="441" height="43"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ghostchat01" translatesAutoresizingMaskIntoConstraints="NO" id="3dg-r2-pu8">
+                    <rect key="frame" x="162" y="106" width="156" height="156"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="156" id="GoO-FZ-0mj"/>
+                        <constraint firstAttribute="height" constant="156" id="ufe-wy-55g"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GhostChat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UEy-ge-lDe">
+                    <rect key="frame" x="154" y="296" width="172" height="59"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="59" id="q01-H5-KhV"/>
+                        <constraint firstAttribute="width" constant="172" id="vJE-mc-UW2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="0.69000000000000006" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="bottom" multiplier="1/3" constant="1" id="5cJ-9S-tgC"/>
-                <constraint firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Koa-jz-hwk"/>
-                <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="20" id="Kzo-t9-V3l"/>
-                <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="MfP-vx-nX0"/>
-                <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
-                <constraint firstItem="kId-c2-rCX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="fvb-Df-36g"/>
+                <constraint firstItem="3dg-r2-pu8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3Qf-qW-Ut3"/>
+                <constraint firstAttribute="trailing" secondItem="3dg-r2-pu8" secondAttribute="trailing" id="EPQ-o6-Hj8"/>
+                <constraint firstAttribute="centerX" secondItem="3dg-r2-pu8" secondAttribute="centerX" id="Etu-KZ-iHe"/>
+                <constraint firstAttribute="bottom" secondItem="3dg-r2-pu8" secondAttribute="bottom" id="OUj-O7-ifb"/>
+                <constraint firstAttribute="centerX" secondItem="UEy-ge-lDe" secondAttribute="centerX" id="Owg-X0-YRh"/>
+                <constraint firstItem="3dg-r2-pu8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="SDj-Am-wRi"/>
+                <constraint firstAttribute="centerY" secondItem="3dg-r2-pu8" secondAttribute="centerY" constant="56" id="cyR-uN-EqF"/>
+                <constraint firstItem="UEy-ge-lDe" firstAttribute="top" secondItem="3dg-r2-pu8" secondAttribute="bottom" constant="34" id="vZ3-Ix-m97"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="3Qf-qW-Ut3"/>
+                    <exclude reference="EPQ-o6-Hj8"/>
+                    <exclude reference="OUj-O7-ifb"/>
+                    <exclude reference="SDj-Am-wRi"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>
+    <resources>
+        <image name="ghostchat01" width="185" height="184"/>
+    </resources>
 </document>
