@@ -68,6 +68,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
             //println("\(nameField.text)")
             advertiseNewName(myTextField.text)
             myTextField.text = ""
+            DismissKeyboard()
             
         }
 
