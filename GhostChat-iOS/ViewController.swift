@@ -49,6 +49,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var chatView: UIView!
     
+    var keyboardUp : Bool = false
+    
     @IBAction func sendButtonPressed(sender: UIButton) {
         
         if nameField.text == ""{
@@ -116,19 +118,24 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, CBCentralMa
     func DismissKeyboard(){
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         self.view.endEditing(true)
+        keyboardUp = false
     }
     
     func keyboardWillShow(notification: NSNotification) {
         if let userInfo = notification.userInfo {
-            if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
-                kbHeight = keyboardSize.height
-                self.animateTextField(true)
+            if keyboardUp == false {
+                if let keyboardSize =  (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+                    kbHeight = keyboardSize.height
+                    self.animateTextField(true)
+                    keyboardUp = true
+                }
             }
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
         self.animateTextField(false)
+        keyboardUp = false
     }
     
     func animateTextField(up: Bool) {
